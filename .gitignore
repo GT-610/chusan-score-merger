@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.wrangler/
+*.local
+.DS_Store
+.vscode/_tmp*/
+*_merged.json
+
+# Vendored reference material and sample exports: supplied inputs, not source.
+.vscode/references/
