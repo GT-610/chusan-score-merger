@@ -15,13 +15,14 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseCsvRecords } from '../src/core/csv';
 import { indexCsv, merge } from '../src/core/merge';
+import type { SaveData } from '../src/core/types';
 
 const HERE = __dirname;
 const csvText = readFileSync(join(HERE, 'fixtures', 'chunithm-scores.csv'), 'utf8');
 const saveText = readFileSync(join(HERE, 'fixtures', 'save-sample.json'), 'utf8');
 
 const { records } = parseCsvRecords(csvText);
-const save = JSON.parse(saveText);
+const save = JSON.parse(saveText) as SaveData;
 
 describe('reference parity', () => {
   const index = indexCsv(records);
@@ -54,10 +55,7 @@ describe('reference parity', () => {
 
   it('keeps every lamp, combo flag and full chain at or above its original value', () => {
     const before = new Map(
-      save.userMusicDetailList.map((d: { musicId: number; level: number }) => [
-        `${d.musicId}/${d.level}`,
-        d,
-      ]),
+      save.userMusicDetailList.map((d) => [`${d.musicId}/${d.level}`, d]),
     );
     for (const rec of result.data.userMusicDetailList) {
       const key = `${rec.musicId}/${rec.level}`;
@@ -77,10 +75,7 @@ describe('reference parity', () => {
       [...result.added, ...result.updated].map((r) => `${r.musicId}/${r.level}`),
     );
     const before = new Map(
-      save.userMusicDetailList.map((d: { musicId: number; level: number }) => [
-        `${d.musicId}/${d.level}`,
-        JSON.stringify(d),
-      ]),
+      save.userMusicDetailList.map((d) => [`${d.musicId}/${d.level}`, JSON.stringify(d)]),
     );
     for (const rec of result.data.userMusicDetailList) {
       const key = `${rec.musicId}/${rec.level}`;

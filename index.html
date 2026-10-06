@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>中二节奏 分数合并器</title>
+    <meta
+      name="description"
+      content="将「落雪咖啡屋」导出的成绩列表合并进 RinNet 存档，全部在浏览器本地完成。"
+    />
+    <link rel="stylesheet" href="/src/ui/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="masthead">
+        <h1>中二节奏 分数合并器</h1>
+        <p class="tagline">
+          把「落雪咖啡屋」的成绩合并进 RinNet 存档。
+          <strong>文件全程不离开你的浏览器</strong>，没有服务器参与。
+        </p>
+      </header>
+
+      <main>
+        <!-- Step 1: inputs -->
+        <section class="card" id="step-inputs">
+          <h2><span class="step-num">1</span> 选择文件</h2>
+
+          <div class="file-grid">
+            <label class="file-drop" id="drop-save">
+              <input type="file" id="file-save" accept=".json,application/json" />
+              <span class="file-label">RinNet 存档（JSON）</span>
+              <span class="file-hint" id="hint-save">尚未选择</span>
+            </label>
+
+            <label class="file-drop" id="drop-csv">
+              <input type="file" id="file-csv" accept=".csv,text/csv" />
+              <span class="file-label">落雪成绩列表（CSV）</span>
+              <span class="file-hint" id="hint-csv">尚未选择</span>
+            </label>
+          </div>
+
+          <label class="option">
+            <input type="checkbox" id="opt-playlogs" checked />
+            <span>
+              同时补写最近游玩记录
+              <small
+                >仅当 CSV 中该条成绩带有 <code>play_time</code> 时写入；缺少时间的记录会被跳过并列出。</small
+              >
+            </span>
+          </label>
+
+          <button class="primary" id="btn-merge" disabled>开始合并</button>
+          <p class="status" id="status" role="status"></p>
+        </section>
+
+        <!-- Step 2: results -->
+        <section class="card hidden" id="step-result">
+          <h2><span class="step-num">2</span> 合并结果</h2>
+
+          <div class="stats" id="stats"></div>
+
+          <div class="actions">
+            <button class="primary" id="btn-download">下载合并后的存档</button>
+            <button class="ghost" id="btn-reset">重新开始</button>
+          </div>
+
+          <p class="outname" id="outname"></p>
+
+          <nav class="tabs" id="tabs">
+            <button class="tab active" data-tab="added">新增成绩</button>
+            <button class="tab" data-tab="updated">更新成绩</button>
+            <button class="tab" data-tab="warnings">
+              提示<span class="badge hidden" id="badge-warn">0</span>
+            </button>
+            <button class="tab" data-tab="skipped">未写日志</button>
+          </nav>
+
+          <div class="panel" id="panel-added"></div>
+          <div class="panel hidden" id="panel-updated"></div>
+          <div class="panel hidden" id="panel-warnings"></div>
+          <div class="panel hidden" id="panel-skipped"></div>
+        </section>
+
+        <section class="card notes">
+          <h3>关于这个工具</h3>
+          <ul>
+            <li>合并只增不减：分数、灯号、FC / AJ、FULL CHAIN 各自取较高者。</li>
+            <li>是否通关不影响合并 —— 只要分数更高，未通关的成绩也会被保留。</li>
+            <li>评价等级由分数推出，不直接采信 CSV 的 <code>rank</code> 列。</li>
+            <li>不修改游玩次数：工具无从得知真实的游玩次数，编造会造成误导。</li>
+            <li>原始存档永不被覆盖，输出为新文件。</li>
+          </ul>
+          <p class="disclaimer">
+            请仅用于迁移你自己在其他平台取得的真实成绩，勿用于伪造分数。使用前请备份原存档 ——
+            本工具不会覆盖你的文件，但导入前保留一份备份总没有坏处。
+          </p>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          数据处理全部发生在本地标签页内，不经过任何服务器。
+        </p>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/ui/main.ts"></script>
+  </body>
+</html>

@@ -39,7 +39,6 @@ export function parseCsv(input: string): ParsedCsv {
   let field = '';
   let inQuotes = false;
   let line = 1;
-  let rowStartLine = 1;
   let sawAny = false;
 
   const endField = () => {
@@ -50,7 +49,6 @@ export function parseCsv(input: string): ParsedCsv {
     endField();
     rows.push(row);
     row = [];
-    rowStartLine = line + 1;
   };
 
   for (let i = 0; i < text.length; i++) {
@@ -73,11 +71,8 @@ export function parseCsv(input: string): ParsedCsv {
 
     switch (c) {
       case '"':
-        if (!sawAny) {
-          rowStartLine = line;
-          sawAny = true;
-        }
         inQuotes = true;
+        sawAny = true;
         break;
       case ',':
         endField();
@@ -96,10 +91,7 @@ export function parseCsv(input: string): ParsedCsv {
         sawAny = false;
         break;
       default:
-        if (!sawAny) {
-          rowStartLine = line;
-          sawAny = true;
-        }
+        sawAny = true;
         field += c;
     }
   }

@@ -13,6 +13,7 @@
 import {
   FULL_CHAIN_MAP,
   LAMP_MAP,
+  LAMP_NAMES,
   LEVEL_NAMES,
   LEVEL_ULTIMA,
   RANK_MAP,
@@ -21,7 +22,6 @@ import {
   scoreToRank,
 } from './constants';
 import type {
-  CsvRow,
   FullChain,
   Lamp,
   Level,
