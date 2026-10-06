@@ -60,7 +60,7 @@ describe('LAMP_MAP', () => {
     expect(LAMP_MAP.brave).toBe(3);
     expect(LAMP_MAP.absolute).toBe(4);
     expect(LAMP_MAP.absolutep).toBe(5);
-    expect(LAMP_MAP['catastrophe']).toBe(6);
+    expect(LAMP_MAP['catastrophy']).toBe(6);
   });
 });
 

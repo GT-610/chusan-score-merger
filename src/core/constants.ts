@@ -105,7 +105,7 @@ export const LAMP_MAP: Readonly<Record<string, Lamp>> = {
   brave: 3,
   absolute: 4,
   absolutep: 5,
-  catastrophe: 6,
+  'catastrophy': 6,
 };
 
 /** CSV `full_chain` text -> `fullChain` value. Higher is stronger. */

@@ -134,9 +134,10 @@ export function indexCsv(rows: Record<string, string>[]): CsvIndex {
     const key = keyOf({ musicId, level: lvl });
 
     const clearText = (row.clear ?? '').toLowerCase();
+    const lampValue = lookupEnum(LAMP_MAP, clearText);
     let lamp: Lamp;
-    if (clearText in LAMP_MAP) {
-      lamp = LAMP_MAP[clearText] as Lamp;
+    if (lampValue !== undefined) {
+      lamp = lampValue;
     } else {
       lamp = 0;
       if (clearText !== '') {
@@ -157,9 +158,10 @@ export function indexCsv(rows: Record<string, string>[]): CsvIndex {
     const fc = fcCol.length > 0 || aj;
 
     const chainText = (row.full_chain ?? '').trim().toLowerCase();
+    const chainValue = lookupEnum(FULL_CHAIN_MAP, chainText);
     let fullChain: FullChain = 0;
-    if (chainText in FULL_CHAIN_MAP) {
-      fullChain = FULL_CHAIN_MAP[chainText] as FullChain;
+    if (chainValue !== undefined) {
+      fullChain = chainValue;
     } else if (chainText !== '') {
       warnings.push({
         kind: 'unknown-fullchain',
@@ -253,6 +255,19 @@ export function indexCsv(rows: Record<string, string>[]): CsvIndex {
   }
 
   return { best, warnings, rowCount, skippedRows, malformedRows };
+}
+
+/**
+ * Own-key enum lookup.
+ *
+ * Deliberately not `key in map`: the `in` operator walks the prototype
+ * chain, so inherited names such as `toString` would resolve to a
+ * function and be written into the save as a bogus value.
+ */
+function lookupEnum<T>(map: Readonly<Record<string, T>>, key: string): T | undefined {
+  return Object.prototype.hasOwnProperty.call(map, key)
+    ? map[key]
+    : undefined;
 }
 
 function toInt(raw: string | undefined): number | null {
@@ -428,9 +443,14 @@ export function merge(
     }
   }
 
+  const emptyReport: PlaylogReport = {
+    injected: 0,
+    skippedNoPlayTime: [],
+    skippedUltima: [],
+  };
   const playlogs = injectPlaylogs
     ? injectPlaylogsInto(data, [...added, ...updated], index)
-    : null;
+    : emptyReport;
 
   return {
     data,
