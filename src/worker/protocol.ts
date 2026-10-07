@@ -46,7 +46,7 @@ export interface MergeSummary {
   updated: SerializableUpdated[];
   skippedNoPlayTime: { musicId: number; level: number; songName: string }[];
   skippedUltima: { musicId: number; level: number; songName: string }[];
-  /** Size of the input and output, for the report footer. */
+  /** Size of the input and output, for the size summary. */
   inputBytes: number;
   outputBytes: number;
 }

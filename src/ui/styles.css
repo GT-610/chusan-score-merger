@@ -462,18 +462,20 @@ td.name {
   font-size: 16px;
 }
 
-.disclaimer {
-  margin: 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
+/*
+ * Repository URL slot, filled in when the project is published. The
+ * wording lives in data-placeholder so no placeholder prose sits in the
+ * markup, and the element stays empty until there is a real link to put
+ * in it.
+ */
+.repo-placeholder:empty::before {
+  content: '待开源时填写';
   color: var(--muted);
-  font-size: 13px;
+  font-style: italic;
 }
 
-footer {
-  color: var(--muted);
-  font-size: 13px;
-  text-align: center;
+.repo-placeholder a {
+  color: var(--accent);
 }
 
 @media (max-width: 560px) {
