@@ -74,15 +74,21 @@ describe('RANK_MAP', () => {
     expect(RANK_MAP['sss+']).toBe(13);
   });
 
-  it('agrees with scoreToRank across every grade boundary', () => {
-    const bounds: Record<number, string> = {
-      0: 'd', 1: 'c', 2: 'b', 3: 'bb', 4: 'bbb', 5: 'a', 6: 'aa',
-      7: 'aaa', 8: 's', 9: 'sp', 10: 'ss', 11: 'ssp', 12: 'sss', 13: 'sssp',
-    };
-    // "sp" and "s+" denote the same grade, likewise ss/ss+ and sss/sss+.
-    const canonical = (t: string) => (t === 's+' ? 'sp' : t === 'ss+' ? 'ssp' : t === 'sss+' ? 'sssp' : t);
-    for (const [text, code] of Object.entries(RANK_MAP)) {
-      expect(bounds[code as number]).toBe(canonical(text));
+  it('agrees with scoreToRank at every grade boundary', () => {
+    // The interesting property is that the two independent paths agree:
+    // looking a grade up by name, and deriving it from a score. Checking
+    // RANK_MAP against another literal table would only test that a
+    // constant equals itself.
+    const lowerBounds = [
+      0, 500000, 600000, 700000, 800000, 900000, 925000, 950000,
+      975000, 990000, 1000000, 1005000, 1007500, 1009000,
+    ];
+    const seen = new Set<number>();
+    for (const code of Object.values(RANK_MAP)) seen.add(code);
+    for (const code of seen) {
+      const bound = lowerBounds[code as number];
+      expect(bound, `no lower bound for rank ${code}`).toBeDefined();
+      expect(scoreToRank(bound as number)).toBe(code);
     }
   });
 });

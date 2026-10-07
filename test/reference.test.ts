@@ -15,6 +15,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseCsvRecords } from '../src/core/csv';
 import { indexCsv, merge } from '../src/core/merge';
+import { scoreToRank } from '../src/core/constants';
 import type { SaveData } from '../src/core/types';
 
 const HERE = __dirname;
@@ -47,9 +48,9 @@ describe('reference parity', () => {
 
   it('never leaves scoreRank disagreeing with scoreMax', () => {
     for (const rec of result.data.userMusicDetailList) {
-      const derived = result.csv.best.get(`${rec.musicId}/${rec.level}`);
-      if (!derived) continue;
-      expect(rec.scoreMax >= 0).toBe(true);
+      const derived = scoreToRank(rec.scoreMax);
+      if (derived === null) continue;
+      expect(rec.scoreRank).toBe(derived);
     }
   });
 
