@@ -44,7 +44,7 @@ export interface MergeSummary {
   updated: SerializableUpdated[];
   skippedNoPlayTime: { musicId: number; level: number; songName: string }[];
   skippedUltima: { musicId: number; level: number; songName: string }[];
-  /** Size of the input and output, for the size summary. */
+  /** True byte length of the input and output, for the size summary. */
   inputBytes: number;
   outputBytes: number;
 }
@@ -116,6 +116,18 @@ export function toSummary(
     skippedNoPlayTime: result.playlogs.skippedNoPlayTime,
     skippedUltima: result.playlogs.skippedUltima,
     inputBytes,
-    outputBytes: outputText.length,
+    outputBytes: byteLength(outputText),
   };
+}
+
+/**
+ * Byte length of a string, not its character count.
+ *
+ * `String.length` counts UTF-16 code units, so a save carrying CJK titles
+ * or a non-ASCII player name would be reported as smaller than the file
+ * actually is. The page labels these figures "MB", so they have to be
+ * bytes.
+ */
+export function byteLength(text: string): number {
+  return new TextEncoder().encode(text).length;
 }

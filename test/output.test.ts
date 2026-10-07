@@ -13,6 +13,8 @@ import { join } from 'node:path';
 import { parseCsvRecords } from '../src/core/csv';
 import { indexCsv, merge } from '../src/core/merge';
 import { scoreToRank } from '../src/core/constants';
+import { byteLength } from '../src/worker/protocol';
+import type { SaveData } from '../src/core/types';
 
 const HERE = __dirname;
 const csvText = readFileSync(join(HERE, 'fixtures', 'chunithm-scores.csv'), 'utf8');
@@ -20,9 +22,28 @@ const saveText = readFileSync(join(HERE, 'fixtures', 'save-sample.json'), 'utf8'
 
 const { records } = parseCsvRecords(csvText);
 const index = indexCsv(records);
-const save = JSON.parse(saveText);
+const save = JSON.parse(saveText) as SaveData;
 const result = merge(save, index);
 const outputText = JSON.stringify(result.data);
+
+describe('byte accounting', () => {
+  it('measures the input in bytes, not UTF-16 code units', () => {
+    // The fixture is ASCII, so the two must agree here. This guards the
+    // common case against a regression to String.length.
+    expect(byteLength(saveText)).toBe(Buffer.byteLength(saveText, 'utf8'));
+  });
+
+  it('counts multi-byte characters as their encoded length', () => {
+    // A CJK player name is one JS character but three UTF-8 bytes.
+    const cjk = '☆ＳＴ３ＬＬＡ♪少女 PastQ《創造》';
+    expect(cjk.length).toBeLessThan(byteLength(cjk));
+    expect(byteLength(cjk)).toBe(Buffer.byteLength(cjk, 'utf8'));
+  });
+
+  it('reports the real size of the merged file', () => {
+    expect(byteLength(outputText)).toBe(Buffer.byteLength(outputText, 'utf8'));
+  });
+});
 
 describe('serialised output', () => {
   const round = JSON.parse(outputText);

@@ -11,7 +11,7 @@
 import { parseCsvRecords } from '../core/csv';
 import { indexCsv, merge } from '../core/merge';
 import type { SaveData } from '../core/types';
-import { toSummary } from './protocol';
+import { byteLength, toSummary } from './protocol';
 import type { MergeRequest, MergeResponse } from './protocol';
 
 self.onmessage = (event: MessageEvent<MergeRequest>) => {
@@ -64,7 +64,7 @@ self.onmessage = (event: MessageEvent<MergeRequest>) => {
     response = {
       ok: true,
       outputText,
-      summary: toSummary(result, req.saveText.length, outputText),
+      summary: toSummary(result, byteLength(req.saveText), outputText),
     };
   } catch (err) {
     response = { ok: false, stage: 'merge', message: describe(err) };
