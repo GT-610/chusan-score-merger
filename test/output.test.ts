@@ -34,8 +34,8 @@ describe('byte accounting', () => {
   });
 
   it('counts multi-byte characters as their encoded length', () => {
-    // A CJK player name is one JS character but three UTF-8 bytes.
-    const cjk = '☆ＳＴ３ＬＬＡ♪少女 PastQ《創造》';
+    // One CJK character is one JS character but three UTF-8 bytes.
+    const cjk = '少女 PastQ《創造》世界';
     expect(cjk.length).toBeLessThan(byteLength(cjk));
     expect(byteLength(cjk)).toBe(Buffer.byteLength(cjk, 'utf8'));
   });
@@ -76,9 +76,9 @@ describe('serialised output', () => {
     expect(outputText).not.toContain('\\u');
 
     // Prove the behaviour directly on the same serialiser.
-    const withText = { ...result.data, userName: '☆ＳＴ３ＬＬＡ♪ 少女PastQ' };
+    const withText = { ...result.data, userName: 'テストプレイヤー' };
     const serialised = JSON.stringify(withText);
-    expect(serialised).toContain('少女PastQ');
+    expect(serialised).toContain('テストプレイヤー');
     expect(serialised).not.toContain('\\u');
   });
 
