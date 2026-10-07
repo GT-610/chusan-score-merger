@@ -52,7 +52,7 @@ export interface BestRecord {
   playTime: string | null;
 }
 
-export type WarningKind =
+type WarningKind =
   | 'unknown-lamp'
   | 'unknown-rank'
   | 'unknown-fullchain'
@@ -259,20 +259,20 @@ function toInt(raw: string | undefined): number | null {
   return Number.isSafeInteger(n) ? n : null;
 }
 
-export interface FieldChange {
+interface FieldChange {
   field: string;
   from: unknown;
   to: unknown;
 }
 
-export interface AddedRecord {
+interface AddedRecord {
   musicId: number;
   level: Level;
   songName: string;
   after: MusicDetail;
 }
 
-export interface UpdatedRecord {
+interface UpdatedRecord {
   musicId: number;
   level: Level;
   songName: string;
@@ -290,7 +290,7 @@ export interface MergeResult {
   playlogs: PlaylogReport;
 }
 
-export interface MergeOptions {
+interface MergeOptions {
   /** Inject playlog entries for charts whose score improved. Default true. */
   injectPlaylogs?: boolean;
 }
@@ -532,7 +532,7 @@ function buildPlaylog(
   };
 }
 
-export interface PlaylogReport {
+interface PlaylogReport {
   injected: number;
   /** Charts improved but skipped because the CSV had no play time. */
   skippedNoPlayTime: { musicId: number; level: Level; songName: string }[];

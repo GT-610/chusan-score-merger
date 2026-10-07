@@ -15,7 +15,7 @@ export interface MergeRequest {
   injectPlaylogs: boolean;
 }
 
-export interface MergeSuccess {
+interface MergeSuccess {
   ok: true;
   /** Serialised merged save, compact. */
   outputText: string;
@@ -23,13 +23,32 @@ export interface MergeSuccess {
   summary: MergeSummary;
 }
 
-export interface MergeFailure {
+interface MergeFailure {
   ok: false;
   message: string;
   stage: 'parse-save' | 'parse-csv' | 'merge';
 }
 
 export type MergeResponse = MergeSuccess | MergeFailure;
+
+/** One added record, flattened for the report table. */
+export interface SummaryAdded {
+  musicId: number;
+  level: number;
+  songName: string;
+  scoreMax: number;
+  scoreRank: number;
+  lamp: number;
+  isFullCombo: boolean;
+  isAllJustice: boolean;
+  fullChain: number;
+}
+
+/** One updated record, flattened for the report table. */
+export interface SummaryUpdated extends SummaryAdded {
+  changes: { field: string; from: unknown; to: unknown }[];
+  playCount: number;
+}
 
 export interface MergeSummary {
   musicCount: number;
@@ -40,39 +59,13 @@ export interface MergeSummary {
   playlogsSkippedUltima: number;
   warningCount: number;
   warnings: Warning[];
-  added: SerializableAdded[];
-  updated: SerializableUpdated[];
+  added: SummaryAdded[];
+  updated: SummaryUpdated[];
   skippedNoPlayTime: { musicId: number; level: number; songName: string }[];
   skippedUltima: { musicId: number; level: number; songName: string }[];
   /** True byte length of the input and output, for the size summary. */
   inputBytes: number;
   outputBytes: number;
-}
-
-export interface SerializableAdded {
-  musicId: number;
-  level: number;
-  songName: string;
-  scoreMax: number;
-  scoreRank: number;
-  lamp: number;
-  isFullCombo: boolean;
-  isAllJustice: boolean;
-  fullChain: number;
-}
-
-export interface SerializableUpdated {
-  musicId: number;
-  level: number;
-  songName: string;
-  changes: { field: string; from: unknown; to: unknown }[];
-  scoreMax: number;
-  scoreRank: number;
-  lamp: number;
-  isFullCombo: boolean;
-  isAllJustice: boolean;
-  fullChain: number;
-  playCount: number;
 }
 
 export function toSummary(

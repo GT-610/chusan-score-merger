@@ -38,12 +38,10 @@ const els = {
 
 const state = {
   saveName: '',
-  csvName: '',
   saveText: '',
   csvText: '',
   outputText: '',
   outputName: '',
-  summary: null as MergeSummary | null,
 };
 
 // ---------------------------------------------------------------- helpers
@@ -131,8 +129,7 @@ wireFilePicker(els.dropSave, els.fileSave, els.hintSave, (name, text) => {
   updateReady();
 });
 
-wireFilePicker(els.dropCsv, els.fileCsv, els.hintCsv, (name, text) => {
-  state.csvName = name;
+wireFilePicker(els.dropCsv, els.fileCsv, els.hintCsv, (_name, text) => {
   state.csvText = text;
   updateReady();
 });
@@ -165,7 +162,6 @@ els.btnMerge.addEventListener('click', () => {
 
     state.outputText = res.outputText;
     state.outputName = outputNameFor(state.saveName);
-    state.summary = res.summary;
 
     render(res.summary);
     setStatus('合并完成。');
