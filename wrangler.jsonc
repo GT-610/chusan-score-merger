@@ -1,0 +1,23 @@
+{
+  // Static-assets-only deployment.
+  //
+  // There is deliberately no "main" entry: with no Worker script, static
+  // assets are served from the edge without invoking an isolate, and
+  // Cloudflare counts those requests as free and unmetered.
+  //
+  // The merge itself must not run here. A 3.4 MB save costs roughly
+  // 18-40 ms to parse and re-serialise, measured on both JavaScriptCore
+  // and V8, against a 10 ms per-request CPU allowance on the free plan.
+  // Running it on the client avoids that ceiling entirely, keeps player
+  // data off the server, and costs nothing.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chusan-score-merger",
+  "compatibility_date": "2026-01-01",
+  "assets": {
+    "directory": "./dist",
+    // Do not enable run_worker_first: on the free tier it turns an
+    // over-quota request into a 429 instead of falling back to the
+    // static asset, which would take the page down.
+    "run_worker_first": false
+  }
+}
