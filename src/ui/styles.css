@@ -321,6 +321,21 @@ td {
   white-space: nowrap;
 }
 
+/*
+ * Cells that hold only badges.
+ *
+ * Badge-only cells drop the inherited 1.6 line-height, which was inflating
+ * the strut and pushing the row taller than its content, and centre their
+ * contents. Without this the pills sat several pixels above the row's
+ * midline and the row rule was pushed down.
+ */
+td.cell-badge {
+  line-height: 1;
+  vertical-align: middle;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
 th {
   position: sticky;
   top: 0;
@@ -338,11 +353,13 @@ td.name {
 
 .tag {
   display: inline-block;
-  padding: 1px 7px;
+  padding: 2px 8px;
   border-radius: 999px;
   font-size: 11.5px;
+  line-height: 1.45;
   background: var(--surface-2);
   border: 1px solid var(--border);
+  vertical-align: middle;
 }
 
 .tag.fc {
@@ -372,14 +389,16 @@ td.name {
    has no single identity colour. */
 .lvl {
   display: inline-block;
-  padding: 2px 10px;
+  padding: 3px 11px;
   border-radius: 999px;
   font-size: 11.5px;
   font-weight: 700;
+  line-height: 1.35;
   letter-spacing: 0.04em;
   color: #0b0d14;
   border: 1px solid transparent;
   white-space: nowrap;
+  vertical-align: middle;
 }
 
 .lvl-0 {

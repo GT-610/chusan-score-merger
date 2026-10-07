@@ -280,9 +280,12 @@ function comboTags(isFc: boolean, isAj: boolean, chain: number): HTMLElement {
   return wrap;
 }
 
-/** Difficulty as a coloured capsule. */
+/** Difficulty as a coloured capsule, wrapped in a badge-only cell. */
 function levelCell(level: number): HTMLElement {
-  return el('span', levelName(level), `lvl lvl-${level}`);
+  const td = el('td');
+  td.className = 'cell-badge';
+  td.append(el('span', levelName(level), `lvl lvl-${level}`));
+  return td;
 }
 
 function renderAdded(s: MergeSummary): void {
@@ -304,6 +307,7 @@ function renderAdded(s: MergeSummary): void {
       el('td', lampName(r.lamp)),
     );
     const combo = document.createElement('td');
+    combo.className = 'cell-badge';
     combo.append(comboTags(r.isFullCombo, r.isAllJustice, r.fullChain));
     tr.append(combo, el('td', `${r.musicId}`));
     body.append(tr);
