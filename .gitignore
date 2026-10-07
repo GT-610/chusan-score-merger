@@ -5,6 +5,8 @@ dist/
 .DS_Store
 .vscode/_tmp*/
 *_merged.json
+*.log
+*.err
 
 # Vendored reference material and sample exports: supplied inputs, not source.
 .vscode/references/
