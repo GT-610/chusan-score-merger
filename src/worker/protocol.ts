@@ -33,8 +33,6 @@ export type MergeResponse = MergeSuccess | MergeFailure;
 
 export interface MergeSummary {
   musicCount: number;
-  csvRowCount: number;
-  skippedRows: number;
   addedCount: number;
   updatedCount: number;
   playlogsInjected: number;
@@ -84,8 +82,6 @@ export function toSummary(
 ): MergeSummary {
   return {
     musicCount: result.data.userMusicDetailList.length,
-    csvRowCount: result.csv.rowCount,
-    skippedRows: result.csv.skippedRows,
     addedCount: result.added.length,
     updatedCount: result.updated.length,
     playlogsInjected: result.playlogs.injected,

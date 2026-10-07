@@ -36,7 +36,6 @@ describe('indexCsv against the real export', () => {
   it('parses every row without field-count damage', () => {
     expect(malformed).toEqual([]);
     expect(records).toHaveLength(2402);
-    expect(index.skippedRows).toBe(0);
   });
 
   it('folds 2402 rows into one record per chart', () => {

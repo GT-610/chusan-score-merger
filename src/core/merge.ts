@@ -50,8 +50,6 @@ export interface BestRecord {
   songName: string;
   /** Earliest usable play time across rows, for playlog injection. */
   playTime: string | null;
-  /** The CSV rank string that disagreed with the derived rank, if any. */
-  rankMismatch: string | null;
 }
 
 export type WarningKind =
@@ -73,9 +71,6 @@ export interface Warning {
 export interface CsvIndex {
   best: Map<string, BestRecord>;
   warnings: Warning[];
-  rowCount: number;
-  skippedRows: number;
-  malformedRows: number[];
 }
 
 /** Normalise "2025-03-06 10:12:00" into the save's wall-clock format. */
@@ -102,21 +97,15 @@ function midnightOf(normalised: string): string {
 export function indexCsv(rows: Record<string, string>[]): CsvIndex {
   const best = new Map<string, BestRecord>();
   const warnings: Warning[] = [];
-  const malformedRows: number[] = [];
-  let rowCount = 0;
-  let skippedRows = 0;
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i] as Record<string, string>;
-    rowCount++;
 
     const musicId = toInt(row.id);
     const level = toInt(row.level_index);
     const score = toInt(row.score);
 
     if (musicId === null || level === null || score === null) {
-      skippedRows++;
-      malformedRows.push(i + 2);
       warnings.push({
         kind: 'bad-row',
         musicId: musicId ?? null,
@@ -173,10 +162,7 @@ export function indexCsv(rows: Record<string, string>[]): CsvIndex {
     const derived = scoreToRank(score);
     const rankText = (row.rank ?? '').toLowerCase();
     const csvRank = RANK_MAP[rankText];
-
-    let rankMismatch: string | null = null;
     if (csvRank !== undefined && derived !== null && csvRank !== derived) {
-      rankMismatch = row.rank ?? '';
       warnings.push({
         kind: 'rank-mismatch',
         musicId,
@@ -223,7 +209,6 @@ export function indexCsv(rows: Record<string, string>[]): CsvIndex {
         fullChain,
         songName,
         playTime,
-        rankMismatch,
       });
       continue;
     }
@@ -232,10 +217,7 @@ export function indexCsv(rows: Record<string, string>[]): CsvIndex {
     if (score > existing.score) {
       existing.score = score;
       existing.scoreRank = derived;
-      existing.rankMismatch = rankMismatch;
       existing.songName = songName;
-    } else if (rankMismatch === null) {
-      existing.rankMismatch ??= rankMismatch;
     }
     if (lamp > existing.lamp) existing.lamp = lamp;
     if (aj) existing.aj = true;
@@ -252,7 +234,7 @@ export function indexCsv(rows: Record<string, string>[]): CsvIndex {
     }
   }
 
-  return { best, warnings, rowCount, skippedRows, malformedRows };
+  return { best, warnings };
 }
 
 /**
