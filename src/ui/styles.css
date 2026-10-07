@@ -351,13 +351,62 @@ td.name {
 }
 
 .tag.aj {
-  color: var(--accent);
-  border-color: var(--accent);
+  color: #fb923c;
+  border-color: #fb923c;
 }
 
 .tag.chain {
   color: var(--warn);
   border-color: var(--warn);
+}
+
+.combo {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Difficulty capsules. ULTIMA is black, so it keeps a light border to stay
+   visible against the dark surface; WORLD'S END gets a gradient because it
+   has no single identity colour. */
+.lvl {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #0b0d14;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.lvl-0 {
+  background: #4ade80;
+}
+
+.lvl-1 {
+  background: #fbbf24;
+}
+
+.lvl-2 {
+  background: #f87171;
+}
+
+.lvl-3 {
+  background: #c084fc;
+}
+
+.lvl-4 {
+  background: #0b0d14;
+  color: #f2f4f8;
+  border-color: #6b7280;
+}
+
+.lvl-5 {
+  background: linear-gradient(90deg, #f87171, #fbbf24, #4ade80, #6ea8fe, #c084fc);
+  color: #0b0d14;
 }
 
 .delta {

@@ -259,13 +259,30 @@ function emptyPanel(panel: HTMLElement, message: string): void {
   panel.replaceChildren(el('p', message, 'empty'));
 }
 
+/**
+ * Full combo / all justice / full chain badges.
+ *
+ * AJ implies FC in the save data, so showing both would just be noise.
+ * Show the stronger badge alone; full chain is independent and always
+ * appears alongside.
+ */
 function comboTags(isFc: boolean, isAj: boolean, chain: number): HTMLElement {
-  const wrap = el('span');
-  if (isAj) wrap.append(el('span', 'AJ', 'tag aj'));
-  if (isFc) wrap.append(el('span', 'FC', 'tag fc'));
-  if (chain > 0) wrap.append(el('span', `FC${chain}`, 'tag chain'));
+  const wrap = el('span', undefined, 'combo');
+  if (isAj) {
+    wrap.append(el('span', 'AJ', 'tag aj'));
+  } else if (isFc) {
+    wrap.append(el('span', 'FC', 'tag fc'));
+  }
+  if (chain > 0) {
+    wrap.append(el('span', `FULL CHAIN ${chain}`, 'tag chain'));
+  }
   if (!wrap.childNodes.length) wrap.textContent = '—';
   return wrap;
+}
+
+/** Difficulty as a coloured capsule. */
+function levelCell(level: number): HTMLElement {
+  return el('span', levelName(level), `lvl lvl-${level}`);
 }
 
 function renderAdded(s: MergeSummary): void {
@@ -281,7 +298,7 @@ function renderAdded(s: MergeSummary): void {
     nameCell.title = r.songName;
     tr.append(
       nameCell,
-      el('td', levelName(r.level)),
+      levelCell(r.level),
       el('td', r.scoreMax.toLocaleString()),
       el('td', rankName(r.scoreRank)),
       el('td', lampName(r.lamp)),
@@ -317,7 +334,7 @@ function renderUpdated(s: MergeSummary): void {
       changeCell.append(line);
     }
 
-    tr.append(nameCell, el('td', levelName(r.level)), changeCell);
+    tr.append(nameCell, levelCell(r.level), changeCell);
     tr.append(el('td', String(r.playCount)), el('td', `${r.musicId}`));
     body.append(tr);
   }
@@ -357,7 +374,7 @@ function renderWarnings(s: MergeSummary): void {
     tr.append(
       el('td', kindLabel[w.kind] ?? w.kind),
       nameCell,
-      el('td', w.level !== null ? levelName(w.level) : '—'),
+      w.level !== null ? levelCell(w.level) : el('td', '—'),
       detail,
     );
     body.append(tr);
@@ -394,7 +411,7 @@ function renderSkipped(s: MergeSummary): void {
     nameCell.title = r.songName;
     tr.append(
       nameCell,
-      el('td', levelName(r.level)),
+      levelCell(r.level),
       el('td', r.why),
       el('td', `${r.musicId}`),
     );
