@@ -23,7 +23,7 @@ import type { FullChain, Lamp, ScoreRank } from './types';
  * Since reverse-lookup failure is a meaningful signal, the legacy bounds
  * are kept here purely so the validator can explain *why* a row failed.
  */
-export const RANK_THRESHOLDS: ReadonlyArray<readonly [number, ScoreRank]> = [
+const RANK_THRESHOLDS: ReadonlyArray<readonly [number, ScoreRank]> = [
   [0, 0], // D
   [500000, 1], // C
   [600000, 2], // B
@@ -41,7 +41,7 @@ export const RANK_THRESHOLDS: ReadonlyArray<readonly [number, ScoreRank]> = [
 ];
 
 /** Theoretical maximum score, an all-justice critical. */
-export const MAX_SCORE = 1010000;
+const MAX_SCORE = 1010000;
 
 /**
  * Legacy (LUMINOUS and earlier) lower bounds. Only used to explain a

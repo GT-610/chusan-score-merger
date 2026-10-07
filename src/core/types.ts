@@ -107,33 +107,12 @@ export interface Playlog {
   isClear: boolean;
 }
 
-export interface UserData {
-  [key: string]: unknown;
-}
-
 export interface SaveData {
   gameId?: string;
-  userData?: UserData;
+  userData?: Record<string, unknown>;
   userMusicDetailList: MusicDetail[];
   userPlaylogList?: Playlog[];
   [key: string]: unknown;
-}
-
-/** One raw row of the "Luoxue Coffee House" score-list CSV export. */
-export interface CsvRow {
-  id: string;
-  song_name: string;
-  level: string;
-  level_index: string;
-  score: string;
-  rating: string;
-  over_power: string;
-  clear: string;
-  full_combo: string;
-  full_chain: string;
-  rank: string;
-  upload_time: string;
-  play_time: string;
 }
 
 /** Identity of a song chart within a save file. */

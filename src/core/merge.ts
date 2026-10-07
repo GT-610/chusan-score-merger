@@ -13,8 +13,6 @@
 import {
   FULL_CHAIN_MAP,
   LAMP_MAP,
-  LAMP_NAMES,
-  LEVEL_NAMES,
   LEVEL_ULTIMA,
   RANK_MAP,
   RANK_NAMES,
@@ -603,13 +601,4 @@ function injectPlaylogsInto(
   }
 
   return report;
-}
-
-/** Human-readable summary line for a level index. */
-export function levelLabel(level: Level): string {
-  return LEVEL_NAMES[level] ?? `LEVEL ${level}`;
-}
-
-export function lampLabel(lamp: Lamp): string {
-  return LAMP_NAMES[lamp] ?? `LAMP ${lamp}`;
 }
