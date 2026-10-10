@@ -2,7 +2,7 @@
   "name": "chusan-score-merger",
   "version": "1.0.0",
   "private": true,
-  "description": "Merge CHUNITHM scores from a community-server export into a RinNet save, entirely in the browser.",
+  "description": "Merge CHUNITHM scores exported from Lxns into a RinNET save, entirely in the browser.",
   "type": "module",
   "scripts": {
     "dev": "vite",

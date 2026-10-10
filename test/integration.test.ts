@@ -1,13 +1,13 @@
 /**
- * Regression check against the reference implementation.
+ * End-to-end merge over a real export pair.
  *
- * The original Python merger was run over the same two files during
- * analysis and reported: 25 records added, 37 records updated. Those
- * numbers are reproduced here, which is the strongest available evidence
- * that the rewrite preserves the reference behaviour on real data.
+ * These counts are the project's regression baseline: the same two files
+ * must always produce 25 added and 37 updated records. They also pin the
+ * invariants that make a merge safe — nothing is downgraded, untouched
+ * records stay byte-identical, and scoreRank never drifts from scoreMax.
  *
- * The save fixture is trimmed from the real export because the original
- * contains player identifying data.
+ * The save fixture is trimmed from a real export, with the player's
+ * identity fields replaced by placeholders.
  */
 
 import { describe, expect, it } from 'vitest';
@@ -25,15 +25,15 @@ const saveText = readFileSync(join(HERE, 'fixtures', 'save-sample.json'), 'utf8'
 const { records } = parseCsvRecords(csvText);
 const save = JSON.parse(saveText) as SaveData;
 
-describe('reference parity', () => {
+describe('full merge over a real export', () => {
   const index = indexCsv(records);
   const result = merge(save, index);
 
-  it('adds exactly the records the reference merger added', () => {
+  it('adds exactly 25 records', () => {
     expect(result.added).toHaveLength(25);
   });
 
-  it('updates exactly the records the reference merger updated', () => {
+  it('updates exactly 37 records', () => {
     expect(result.updated).toHaveLength(37);
   });
 

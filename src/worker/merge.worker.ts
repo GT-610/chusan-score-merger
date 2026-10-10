@@ -32,7 +32,7 @@ self.onmessage = (event: MessageEvent<MergeRequest>) => {
         ok: false,
         stage: 'parse-save',
         message:
-          'This file has no "userMusicDetailList" array. Please choose a save exported from RinNet.',
+          'This file has no "userMusicDetailList" array. Please choose a save exported from RinNET.',
       });
       return;
     }

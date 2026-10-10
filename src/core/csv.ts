@@ -8,8 +8,8 @@
  *     2461,"《創造》 ～ Cries, beyond The End",13+,2,1004946,...
  *
  * Splitting on commas shifts every column after the title and silently
- * corrupts the row. This parser is a character scanner, matching what
- * Python's `csv.DictReader` does.
+ * corrupts the row, so this is a full character scanner rather than a
+ * string split.
  */
 
 /** Strip a UTF-8 BOM if the exporter wrote one. */
