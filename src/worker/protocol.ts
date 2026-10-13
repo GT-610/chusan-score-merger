@@ -31,8 +31,13 @@ interface MergeFailure {
 
 export type MergeResponse = MergeSuccess | MergeFailure;
 
-/** One added record, flattened for the report table. */
-export interface SummaryAdded {
+/**
+ * One added record, flattened for the report table.
+ *
+ * Not exported: these two shapes are read through `MergeSummary`, which is
+ * the only thing the page ever sees cross the worker boundary.
+ */
+interface SummaryAdded {
   musicId: number;
   level: number;
   songName: string;
@@ -45,7 +50,7 @@ export interface SummaryAdded {
 }
 
 /** One updated record, flattened for the report table. */
-export interface SummaryUpdated extends SummaryAdded {
+interface SummaryUpdated extends SummaryAdded {
   changes: { field: string; from: unknown; to: unknown }[];
   playCount: number;
 }

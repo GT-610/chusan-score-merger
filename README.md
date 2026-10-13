@@ -132,8 +132,8 @@ test/
 `wrangler.jsonc` 只配置静态资源、不含 Worker 脚本，静态文件由边缘直接吐出而不进入 isolate，Cloudflare 明确将此类请求计为免费且不限量。数 MB 的存档解析与重新序列化需要数十毫秒，而免费套餐每次请求的 CPU 上限只有 10 ms，Worker 无法稳定满足。放在客户端同时也让玩家数据不经过服务器。
 
 ```bash
-bun run build
-npx wrangler deploy   # 需要先登录 Cloudflare
+bunx wrangler login   # 首次部署前需要，浏览器完成 OAuth 授权
+bun run deploy        # = vite build && wrangler deploy
 ```
 
 不要开启 `run_worker_first`：免费套餐一旦超配额，它会返回 429 而不是回退到静态资源，页面会直接不可用。

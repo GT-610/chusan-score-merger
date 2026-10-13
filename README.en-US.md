@@ -132,8 +132,8 @@ The merge kernel is a set of pure functions that touch no IO, clock or randomnes
 `wrangler.jsonc` configures static assets with no Worker script, so the edge serves the bundle without invoking an isolate and Cloudflare counts those requests as free and unmetered. Parsing and re-serialising a multi-megabyte save costs tens of milliseconds, against a 10 ms per-request CPU allowance on the free plan, which a Worker cannot meet reliably. Running on the client also keeps player data off the server.
 
 ```bash
-bun run build
-npx wrangler deploy   # requires a Cloudflare login
+bunx wrangler login   # required once before the first deploy; OAuth in the browser
+bun run deploy        # = vite build && wrangler deploy
 ```
 
 Do not enable `run_worker_first`: on the free tier it returns a 429 instead of falling back to the static asset, which would take the page down.

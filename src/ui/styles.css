@@ -469,19 +469,13 @@ td.name {
 }
 
 /*
- * Repository URL slot, filled in when the project is published. The
- * wording lives in data-placeholder so no placeholder prose sits in the
- * markup, and the element stays empty until there is a real link to put
- * in it.
+ * Repository link. Anchored in the markup rather than injected at runtime:
+ * the address is fixed at build time, so a plain <a> is both simpler and
+ * crawlable.
  */
-.repo-placeholder:empty::before {
-  content: '待开源时填写';
-  color: var(--muted);
-  font-style: italic;
-}
-
-.repo-placeholder a {
+.repo-link {
   color: var(--accent);
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 560px) {
