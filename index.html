@@ -9,6 +9,7 @@
       content="将落雪导出的成绩合并进 RinNET 存档，全部在浏览器本地完成。"
     />
     <link rel="stylesheet" href="/src/ui/styles.css" />
+    <script defer src="https://events.vercount.one/js"></script>
   </head>
   <body>
     <div class="page">
@@ -107,6 +108,25 @@
           </ul>
         </section>
       </main>
+
+      <!--
+        Vercount visitor counter.
+        The three span ids below are the public contract: the deferred
+        events.vercount.one script fills them in, so the fallback text is
+        only what a user sees while the request is in flight.
+      -->
+      <footer class="site-footer">
+        <p class="footer-stats">
+          <span>总访问</span>
+          <strong id="vercount_value_site_pv">0</strong>
+          <span class="footer-sep">·</span>
+          <span>总访客</span>
+          <strong id="vercount_value_site_uv">0</strong>
+          <span class="footer-sep">·</span>
+          <span>本页</span>
+          <strong id="vercount_value_page_pv">0</strong>
+        </p>
+      </footer>
     </div>
 
     <script type="module" src="/src/ui/main.ts"></script>

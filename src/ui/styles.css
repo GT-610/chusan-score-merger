@@ -468,6 +468,48 @@ td.name {
   font-size: 16px;
 }
 
+/* --- footer stats (Vercount) --- */
+
+/*
+ * Centred visitor counter below the last card.
+ *
+ * border-top over margin-top: the rule sits flush with the page's content
+ * width, and the gap above it collapses with the .card's own margin-bottom
+ * (20px) instead of stacking into 32px. The same 20px is repeated below to
+ * mirror it.
+ */
+.site-footer {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.footer-stats {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* The third number is the current page, not the whole site, so it is kept
+   visually distinct; it is also the only one that marks it as a page view. */
+.footer-stats strong {
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.footer-stats .footer-sep {
+  color: var(--border);
+  user-select: none;
+}
+
 /*
  * Repository link. Anchored in the markup rather than injected at runtime:
  * the address is fixed at build time, so a plain <a> is both simpler and
